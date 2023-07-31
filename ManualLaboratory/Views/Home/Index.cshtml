@@ -1,0 +1,13 @@
+﻿@model string 
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="index" asp-controller="Requests">Index for Request</a>
+</div>

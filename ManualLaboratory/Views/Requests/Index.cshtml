@@ -1,0 +1,130 @@
+﻿@model IEnumerable<ManualLaboratory.Models.Request>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    <div class="col-1">
+        <select class="mb-3 btn btn-light" id="language-Selector">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+        </select>
+    </div>
+    <div class="col-2">
+        @if(User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                 <a class="btn btn-info text-white" asp-controller="Manages" asp-action="Edit">System Config</a>
+            }
+        }
+    </div>
+</div>
+<form method="get" asp-action="index">
+    <div class="row">
+        <div class="col mb-3">
+            <h5 class="py-3 text-center text-white bg-info">
+                Students and Screening Application Form
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="form-group">
+                <select name="College" class="form-select">
+                    <option></option>
+                    <option>الطب البشري(المقر الرئيسي)</option>
+                    <option>الطب والعلوم الطبية(القطاع الجنوبي)</option>
+                    <option>طب الأسنان(المقر الرئيسي)</option>
+                    <option>الصيدلة(المقر الرئيسي)</option>
+                    <option>الصيدلة(القطاع الجنوبي)</option>
+                    <option>العلوم التطبيقية</option>
+                    <option>البصريات</option>
+                    <option>التمريض</option>
+                    <option>التأهيل الطبي</option>
+                    <option>العلوم الصحية</option>
+                    <option>الصحة العامة والمعلوماتية</option>
+                    <option>كلية الزراعة</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <select name="StudentStatus" class="form-select">
+                    <option></option>
+                    <option>New Student</option>
+                    <option>Intern</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-2">
+            <input class="btn btn-info text-white" type="submit" value="search" />
+        </div>
+        <div class="col-1">
+            <button class="btn btn-info text-white">Extract</button>
+        </div>
+        <div class="col-3 text-danger">
+            <p>Extract all or as per search results</p>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr class="info">
+            <td>
+                Request No
+            </td>
+            <th>
+                Full Name
+            </th>
+            <th>
+                National/Residence Id
+            </th>
+            <th>
+                University No
+            </th>
+            <th>
+                Student Status
+            </th>
+            <th>
+                College
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstNameEn)
+                    @Html.DisplayFor(modelItem => item.FatherNameEn)
+                    @Html.DisplayFor(modelItem => item.GrandfatherNameEn)
+                    @Html.DisplayFor(modelItem => item.FamilyNameEn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NationalId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniversityNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.College)
+                </td>
+                <td>
+                    <a class="btn btn-info text-white" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,258 @@
+﻿@model ManualLaboratory.Models.Request
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@if (ViewBag.ErrorMessage is not null)
+{
+    <div class="text-danger h2 w-50">
+        @ViewBag.ErrorMessage
+    </div>
+}
+<div class="row">
+    <div class="col">
+        <form asp-action="Create">
+
+
+            <div class="row">
+                <div class="col">
+                    <select class="mb-3 btn btn-light" id="language-Selector">
+                        <option value="en">English</option>
+                        <option value="ar">Arabic</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <h5 class="pb-3 pt-3 text-center text-white bg-info">
+                        Students and Screening Application Form
+                    </h5>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+                <div class="col">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NationalId" class="control-label text-info"></label>
+                        <input asp-for="NationalId" class="form-control" />
+                        <span asp-validation-for="NationalId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="UniversityNo" class="control-label text-info"></label>
+                        <input asp-for="UniversityNo" class="form-control" />
+                        <span asp-validation-for="UniversityNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="StudentStatus" class="control-label text-info"></label>
+                        <select asp-for="StudentStatus" class="form-select">
+                            <option>Student Status</option>
+                            <option value="New Student">New Student</option>
+                            <option value="Intern">Intern</option>
+                        </select>
+                        <span asp-validation-for="StudentStatus" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="College" class="control-label text-info"></label>
+                        <select asp-for="College" class="form-select">
+                            <option>College</option>
+                            <option>الطب البشري(المقر الرئيسي)</option>
+                            <option>الطب والعلوم الطبية(القطاع الجنوبي)</option>
+                            <option>طب الأسنان(المقر الرئيسي)</option>
+                            <option>الصيدلة(المقر الرئيسي)</option>
+                            <option>الصيدلة(القطاع الجنوبي)</option>
+                            <option>العلوم التطبيقية</option>
+                            <option>البصريات</option>
+                            <option>التمريض</option>
+                            <option>التأهيل الطبي</option>
+                            <option>العلوم الصحية</option>
+                            <option>الصحة العامة والمعلوماتية</option>
+                            <option>كلية الزراعة</option>
+                        </select>
+                        <!-- <input asp-for="College" class="form-control" /> -->
+                        <span asp-validation-for="College" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FirstNameEn" class="control-label text-info"></label>
+                        <input asp-for="FirstNameEn" class="form-control" />
+                        <span asp-validation-for="FirstNameEn" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FatherNameEn" class="control-label text-info"></label>
+                        <input asp-for="FatherNameEn" class="form-control" />
+                        <span asp-validation-for="FatherNameEn" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="GrandfatherNameEn" class="control-label text-info"></label>
+                        <input asp-for="GrandfatherNameEn" class="form-control" />
+                        <span asp-validation-for="GrandfatherNameEn" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FamilyNameEn" class="control-label text-info"></label>
+                        <input asp-for="FamilyNameEn" class="form-control" />
+                        <span asp-validation-for="FamilyNameEn" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FirstNameAr" class="control-label text-info"></label>
+                        <input asp-for="FirstNameAr" class="form-control" />
+                        <span asp-validation-for="FirstNameAr" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FatherNameAr" class="control-label text-info"></label>
+                        <input asp-for="FatherNameAr" class="form-control" />
+                        <span asp-validation-for="FatherNameAr" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="GrandfatherNameAr" class="control-label text-info"></label>
+                        <input asp-for="GrandfatherNameAr" class="form-control" />
+                        <span asp-validation-for="GrandfatherNameAr" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="FamilyNameAr" class="control-label text-info"></label>
+                        <input asp-for="FamilyNameAr" class="form-control" />
+                        <span asp-validation-for="FamilyNameAr" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label text-info"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="PhoneNo" class="control-label text-info"></label>
+                        <input asp-for="PhoneNo" class="form-control" placeholder="05********" />
+                        <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="BirthDate" class="control-label text-info"></label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MidecalfileNo" class="control-label text-info"></label>
+                        <input asp-for="MidecalfileNo" class="form-control" />
+                        <span asp-validation-for="MidecalfileNo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <li class="text-danger">
+                        In case the Id is not available, please attach a copy
+                        of Qassim University student file
+                    </li>
+                </div>
+            </div>
+            <hr class="bg-dark">
+            <div class="row">
+                <div class="col">
+                    <h5 class="text-info">Kindly select a suitable date for the needed tests.</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        @*<label asp-for="DateSelected" class="control-label text-info"></label>
+                        <input asp-for="DateSelected" type="date" class="form-control" />
+                        <span asp-validation-for="DateSelected" class="text-danger"></span>*@
+                        <select class="form-control" name="DateSelected">
+                            @if (ViewBag.AvalibleDates is not null)
+                            {
+                                var avalibleDates = (List<DateTime>)ViewBag.AvalibleDates;
+                                foreach (var avalibleDate in avalibleDates)
+                                {
+                                    <option>@avalibleDate.ToLongDateString()</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="flexCheckChecked" required>
+                    <label for="flexCheckChecked" class="form-check-label mb-3">
+                        I declare that the
+                        above-mentioned data is accurate and filled out by me personally.
+                    </label>
+                </div>
+            </div>
+            <hr class="bg-dark">
+            <div class="row">
+                <div class="col text-danger">
+                    <h4>Important Notes</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ul class="text-info">
+                        <li>Lab is open from 8:00 AM till 1:00 PM</li>
+                        <li>
+                            Students that did not submit a request through the portal will not be
+                            accepted
+                        </li>
+                        <li>
+                            Blood resulted within 14 working days, kindly bring the approved
+                            university/institution tests` form filled out.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-info text-white" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
