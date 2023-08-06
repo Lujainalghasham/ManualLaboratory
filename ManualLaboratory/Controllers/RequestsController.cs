@@ -3,32 +3,100 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ManualLaboratory.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using ClosedXML.Excel;
 
 namespace ManualLaboratory.Controllers
 {
     public class RequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private List<Request> Requests = new List<Request>();   
         public RequestsController(ApplicationDbContext context)
         {
             _context = context;
         }
         [Authorize(Roles = "Recep,Admin")]
-        public async Task<IActionResult> Index(string? college, string? studentstatus)
+        public async Task<IActionResult> Index(string searchSelect, string searchLabel)
         {
-            if (!string.IsNullOrEmpty(college) && !string.IsNullOrEmpty(studentstatus))
+            var searchelement = from c in _context.Request select c;
+            if (!string.IsNullOrEmpty(searchLabel))
             {
-                return View(await _context.Request.Where(r => r.College == college && r.StudentStatus == studentstatus).ToListAsync());
+                if (searchSelect == "College")
+                {
+                    searchelement = searchelement.Where(s => s.College.Contains(searchLabel));
+                }
+                else if (searchSelect == "Status")
+                {
+                    searchelement = searchelement.Where(s => s.StudentStatus.Contains(searchLabel));
+                }
             }
-            else if (!string.IsNullOrEmpty(college) || !string.IsNullOrEmpty(studentstatus))
-            {
-                return View(await _context.Request.Where(r => r.College == college || r.StudentStatus == studentstatus).ToListAsync());
+            return View(await searchelement.ToListAsync());
             }
-            else
+        [HttpGet]
+        public async Task<FileResult> ExportInExcel()
+        {
+            var Requests = await _context.Request.ToListAsync();
+            var FileName = "Requests.xlsx";
+            return GenerateExcel(FileName, Requests);
+        }
+        private FileResult GenerateExcel(string FileName, IEnumerable<Request> requests)
+        {
+            DataTable dataTabel = new DataTable("Requests");
+            dataTabel.Columns.AddRange(new DataColumn[]
             {
-                return _context.Request != null ?
-                    View(await _context.Request.ToListAsync()) :
-                    Problem("Entity set 'ApplicationDbContext.Requests' is null");
+                new DataColumn("Id"),
+                new DataColumn("NationalId"),
+                new DataColumn("UniversityNo"),
+                new DataColumn("StudentStatus"),
+                new DataColumn("College"),
+                new DataColumn("FirstNameEn"),
+                new DataColumn("FatherNameEn"),
+                new DataColumn("GrandfatherNameEn"),
+                new DataColumn("FamilyNameEn"),
+                new DataColumn("FirstNameAr"),
+                new DataColumn("FatherNameAr"),
+                new DataColumn("GrandfatherNameAr"),
+                new DataColumn("FamilyNameAr"),
+                new DataColumn("Email"),
+                new DataColumn("PhoneNo"),
+                new DataColumn("BirthDate"),
+                new DataColumn("MidecalfileNo"),
+                new DataColumn("DateSelected")
+            });
+            foreach (var Request in Requests)
+            {
+                dataTabel.Rows.Add(
+                    Request.Id,
+                    Request.NationalId,
+                    Request.UniversityNo,
+                    Request.StudentStatus,
+                    Request.College,
+                    Request.FirstNameEn,
+                    Request.FatherNameEn,
+                    Request.GrandfatherNameEn,
+                    Request.FamilyNameEn,
+                    Request.FirstNameAr,
+                    Request.FatherNameAr,
+                    Request.GrandfatherNameAr,
+                    Request.FamilyNameAr,
+                    Request.Email,
+                    Request.PhoneNo,
+                    Request.BirthDate,
+                    Request.MidecalfileNo,
+                    Request.DateSelected);
+            }
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                workbook.Worksheets.Add(dataTabel);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    return File(stream.ToArray(),
+                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", FileName);
+                }
             }
         }
 
@@ -58,7 +126,11 @@ namespace ManualLaboratory.Controllers
                 avalibleDates.Add(date);
             }
             ViewBag.AvalibleDates = avalibleDates;
-            return View();
+            
+            VMCollege vMCollege = new VMCollege();
+            var colleges = _context.College.ToList();
+            vMCollege.CollegesSelectList = new SelectList(colleges, "CollegeName", "CollegeName");
+            return View(vMCollege);
         }
 
         //POST
@@ -66,18 +138,22 @@ namespace ManualLaboratory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NationalId,UniversityNo,StudentStatus,College,FirstNameEn,FatherNameEn,GrandfatherNameEn,FamilyNameEn,FirstNameAr,FatherNameAr,GrandfatherNameAr,FamilyNameAr,Email,PhoneNo,BirthDate,MidecalfileNo,DateSelected")] Request request)
         {
+            VMCollege vMCollege = new VMCollege();
+            var colleges = _context.College.ToList();
+            vMCollege.CollegesSelectList = new SelectList(colleges, "CollegeName", "CollegeName");
+            vMCollege.request = request;
             var manage = _context.Manage.Where(x => x.Name == "limitationDays").FirstOrDefault();
             if (manage is null)
             {
                 ViewBag.ErrorMessage = "You Need to Set the Limit in Manage Page";
-                return View();
+                return View(vMCollege);
             }
             var limitDays = manage.Value;
             var requestCount = _context.Request.Where(x => x.DateSelected == request.DateSelected).Count();
             if (requestCount >= limitDays)
             {
                 ViewBag.ErrorMessage = "Sorry, The Limit of Request for this day is Reached";
-                return View();
+                return View(vMCollege);
             }
 
             if (ModelState.IsValid)
@@ -87,7 +163,7 @@ namespace ManualLaboratory.Controllers
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction("Message");
             }
-            return View(request);
+            return View(vMCollege);
         }
         public IActionResult Message()
         {

@@ -35,37 +35,31 @@
     <div class="row">
         <div class="col-2">
             <div class="form-group">
-                <select name="College" class="form-select">
+                <select name="searchSelect" class="form-select">
                     <option></option>
-                    <option>الطب البشري(المقر الرئيسي)</option>
-                    <option>الطب والعلوم الطبية(القطاع الجنوبي)</option>
-                    <option>طب الأسنان(المقر الرئيسي)</option>
-                    <option>الصيدلة(المقر الرئيسي)</option>
-                    <option>الصيدلة(القطاع الجنوبي)</option>
-                    <option>العلوم التطبيقية</option>
-                    <option>البصريات</option>
-                    <option>التمريض</option>
-                    <option>التأهيل الطبي</option>
-                    <option>العلوم الصحية</option>
-                    <option>الصحة العامة والمعلوماتية</option>
-                    <option>كلية الزراعة</option>
+                    <option>College</option>
+                    <option>Status</option>
                 </select>
             </div>
-        </div>
-        <div class="col-2">
-            <div class="form-group">
-                <select name="StudentStatus" class="form-select">
-                    <option></option>
-                    <option>New Student</option>
-                    <option>Intern</option>
-                </select>
             </div>
+        <div class="col-4">
+            <div class="row">
+                <form asp-action="Index">
+                    <div class="col-4">
+                        <input name="searchLabel" class="form-control" type="text" />
+                    </div>
+                   <div class="col-2">
+                        <input type="submit" class="btn btn-info text-white" value="search" />
+                   </div>
+                   
+                </form>
+            </div>
+           
         </div>
-        <div class="col-2">
-            <input class="btn btn-info text-white" type="submit" value="search" />
-        </div>
+          
         <div class="col-1">
-            <button class="btn btn-info text-white">Extract</button>
+            <a asp-action="ExportInExcel" class="btn btn-info text-white">Extract</a>
+           @* <button asp-action="ExportInExcel" class="btn btn-info text-white">Extract</button>*@
         </div>
         <div class="col-3 text-danger">
             <p>Extract all or as per search results</p>
